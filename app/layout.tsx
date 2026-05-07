@@ -34,6 +34,11 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Gardenia — التوظيف",
   description: "موقع التوظيف الإلكتروني لصالون Gardenia",
+  icons: {
+    icon: "/logo.jpg",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({
