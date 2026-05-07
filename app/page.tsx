@@ -3,6 +3,7 @@ import { getDb, ensureIndexes } from "@/lib/mongodb";
 import { startOfTodayInSalonTZ } from "@/lib/dates";
 import { formatDateAr } from "@/lib/format";
 import { HeroEffects } from "@/components/public/hero-effects";
+import { HeroPetals } from "@/components/public/hero-petals";
 import type { Job } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +75,7 @@ export default async function HomePage() {
       {/* ============== HERO ============== */}
       <section className="gd-hero" id="hero">
         <div className="gd-hero-blob" id="gd-blob" />
+        <HeroPetals />
 
         <div className="gd-marquee" aria-hidden="true">
           <div className="gd-marquee-track">

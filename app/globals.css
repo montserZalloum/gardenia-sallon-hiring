@@ -329,10 +329,97 @@
   font-family: inherit;
   font-style: normal;
   font-weight: inherit;
+  position: relative;
   color: var(--gd-clay);
+  background: linear-gradient(
+    100deg,
+    var(--gd-clay) 0%,
+    var(--gd-clay) 38%,
+    #E0A98F 50%,
+    var(--gd-clay) 62%,
+    var(--gd-clay) 100%
+  );
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation:
+    gd-rise 1.1s var(--gd-ease-out) 380ms forwards,
+    gd-shimmer 7s ease-in-out 1600ms infinite,
+    gd-breathe 5.5s ease-in-out 1600ms infinite;
+  transform-origin: center;
+}
+.gd-hero-title em.italic-accent::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  bottom: 0.06em;
+  height: 2px;
+  background: var(--gd-clay);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 700ms var(--gd-ease-out), opacity 700ms;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.gd-hero-title:hover em.italic-accent::after {
+  transform: scaleX(1);
 }
 @keyframes gd-rise {
   to { transform: translateY(0); opacity: 1; }
+}
+@keyframes gd-shimmer {
+  0%, 100% { background-position: 100% 0; }
+  50%      { background-position: 0 0; }
+}
+@keyframes gd-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.018); }
+}
+
+/* ——— Drifting petals ——— */
+.gd-petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+.gd-petal {
+  position: absolute;
+  bottom: -8%;
+  display: block;
+  opacity: 0;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+  animation-name: gd-petal-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+.gd-petal svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(var(--gd-petal-rot, 0deg));
+}
+@keyframes gd-petal-rise {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg);                                    opacity: 0; }
+  8%   {                                                                                  opacity: 0.55; }
+  50%  { transform: translate3d(var(--gd-petal-drift, 30px), -55vh, 0) rotate(180deg);    opacity: 0.55; }
+  92%  {                                                                                  opacity: 0.45; }
+  100% { transform: translate3d(calc(var(--gd-petal-drift, 30px) * -0.4), -110vh, 0) rotate(360deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gd-petal,
+  .gd-hero-title em.italic-accent {
+    animation: none !important;
+  }
+  .gd-hero-title em.italic-accent {
+    -webkit-text-fill-color: var(--gd-clay);
+    color: var(--gd-clay);
+  }
 }
 
 .gd-hero-flower {
