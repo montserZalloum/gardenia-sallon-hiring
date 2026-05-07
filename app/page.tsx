@@ -136,10 +136,8 @@ export default async function HomePage() {
                 <circle r="2.4" fill="currentColor" stroke="none" />
                 {/* upper blade */}
                 <path d="M 0 0 L 50 -10" />
-                <path d="M 0 0 L 48 -2" />
                 {/* lower blade */}
                 <path d="M 0 0 L 50 10" />
-                <path d="M 0 0 L 48 2" />
                 {/* upper handle ring */}
                 <circle cx="-22" cy="-18" r="12" />
                 <path d="M 0 0 L -12 -10" />

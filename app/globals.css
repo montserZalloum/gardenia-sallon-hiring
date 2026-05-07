@@ -48,7 +48,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.275 0.019 39);
 
-  --primary: oklch(0.665 0.099 13.5);           /* #D4838C peachy pink */
+  --primary: var(--gd-clay);                    /* synced to editorial accent */
   --primary-foreground: oklch(1 0 0);
 
   --secondary: oklch(0.93 0.02 80);             /* #EFE6DB used as soft surface accent */
@@ -71,7 +71,7 @@
 
   --border: oklch(0.93 0.02 80);                /* #EFE6DB */
   --input: oklch(0.93 0.02 80);
-  --ring: oklch(0.665 0.099 13.5);              /* primary */
+  --ring: var(--gd-clay);                       /* primary */
 
   --radius: 0.85rem;
 
@@ -80,7 +80,7 @@
   --gd-cream: #F5EFE6;
   --gd-noir: #1F1612;
   --gd-ink: #3D2B26;
-  --gd-clay: #B57A5F;
+  --gd-clay: #D4637E;
   --gd-rose: #E8C9B8;
   --gd-blush: #F2DFD2;
   --gd-mute: #8B7468;
@@ -335,7 +335,7 @@
     100deg,
     var(--gd-clay) 0%,
     var(--gd-clay) 38%,
-    #E0A98F 50%,
+    #F19BB1 50%,
     var(--gd-clay) 62%,
     var(--gd-clay) 100%
   );
