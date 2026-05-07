@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# uploaded resumes (kept on disk, not in git)
+/uploads/*
+!/uploads/.gitkeep
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code
+/.claude/

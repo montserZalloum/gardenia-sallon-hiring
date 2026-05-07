@@ -1,65 +1,251 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getDb, ensureIndexes } from "@/lib/mongodb";
+import { startOfTodayInSalonTZ } from "@/lib/dates";
+import { formatDateAr } from "@/lib/format";
+import { HeroEffects } from "@/components/public/hero-effects";
+import type { Job } from "@/lib/types";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+async function fetchActiveJobs() {
+  await ensureIndexes();
+  const db = await getDb();
+  const today = startOfTodayInSalonTZ();
+  const docs = await db
+    .collection<Job>("jobs")
+    .find({
+      published: { $ne: false },
+      $or: [
+        { expiryDate: null },
+        { expiryDate: { $exists: false } },
+        { expiryDate: { $gte: today } },
+      ],
+    })
+    .sort({ createdAt: -1 })
+    .toArray();
+  return docs.map((d) => ({
+    id: d._id.toString(),
+    title: d.title,
+    expiryDate: d.expiryDate ? d.expiryDate.toISOString() : null,
+  }));
+}
+
+const MARQUEE_TERMS = [
+  "تسريحُ الشَّعر",
+  "العنايةُ بالبشرة",
+  "العنايةُ بالأظافر",
+  "تجفيفٌ وتصفيف",
+  "صبغةُ الشَّعر",
+  "أهلاً بكِ",
+];
+
+function splitTitleAccent(title: string) {
+  // Highlight the last word as the italic accent.
+  const trimmed = title.trim();
+  const idx = trimmed.lastIndexOf(" ");
+  if (idx === -1) return { lead: "", accent: trimmed };
+  return {
+    lead: trimmed.slice(0, idx),
+    accent: trimmed.slice(idx + 1),
+  };
+}
+
+function pad2(n: number) {
+  return n.toString().padStart(2, "0");
+}
+
+export default async function HomePage() {
+  const jobs = await fetchActiveJobs();
+  const marqueeRow = [...MARQUEE_TERMS, ...MARQUEE_TERMS];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="gd-page">
+      <HeroEffects />
+
+      {/* ============== HEADER ============== */}
+      <header className="gd-header" id="gd-header">
+        <div className="gd-container gd-header-inner">
+          <Link className="gd-wordmark" href="/">
+            Gardenia<span className="star">✦</span>
+          </Link>
+        </div>
+      </header>
+
+      {/* ============== HERO ============== */}
+      <section className="gd-hero" id="hero">
+        <div className="gd-hero-blob" id="gd-blob" />
+
+        <div className="gd-marquee" aria-hidden="true">
+          <div className="gd-marquee-track">
+            {marqueeRow.map((t, i) => (
+              <span key={i}>{t}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="gd-container">
+          <div className="gd-hero-eyebrow">انضمّي إلى عائلة Gardenia</div>
+
+          <h1 className="gd-hero-title" id="gd-title">
+            <span className="line">
+              <span className="word">نبحث</span>
+            </span>
+            <span className="line">
+              <span className="word">عن مواهب</span>
+            </span>
+            <span className="line">
+              <span className="word">تشبه </span>
+              <em className="italic-accent">روحَ المكان.</em>
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+
+          <div className="gd-hero-flower" aria-hidden="true">
+            <svg
+              viewBox="0 0 120 120"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <g transform="translate(60 60)">
+                <ellipse rx="6" ry="22" />
+                <ellipse rx="6" ry="22" transform="rotate(30)" />
+                <ellipse rx="6" ry="22" transform="rotate(60)" />
+                <ellipse rx="6" ry="22" transform="rotate(90)" />
+                <ellipse rx="6" ry="22" transform="rotate(120)" />
+                <ellipse rx="6" ry="22" transform="rotate(150)" />
+                <circle r="4" fill="currentColor" stroke="none" />
+              </g>
+            </svg>
+          </div>
+
+          <div className="gd-hero-scissors" aria-hidden="true">
+            <svg
+              viewBox="0 0 120 120"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <g transform="translate(60 60)">
+                {/* pivot */}
+                <circle r="2.4" fill="currentColor" stroke="none" />
+                {/* upper blade */}
+                <path d="M 0 0 L 50 -10" />
+                <path d="M 0 0 L 48 -2" />
+                {/* lower blade */}
+                <path d="M 0 0 L 50 10" />
+                <path d="M 0 0 L 48 2" />
+                {/* upper handle ring */}
+                <circle cx="-22" cy="-18" r="12" />
+                <path d="M 0 0 L -12 -10" />
+                {/* lower handle ring */}
+                <circle cx="-22" cy="18" r="12" />
+                <path d="M 0 0 L -12 10" />
+              </g>
+            </svg>
+          </div>
+
+          <div className="gd-hero-foot">
+            <p className="gd-hero-lede">
+              تصفّحي الوظائف المتاحة، واختاري ما <em>يناسبكِ</em>.
+              <br />
+              كل تقديم يصل مباشرةً لصاحبة الصالون.
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* ============== VACANCIES ============== */}
+      <section className="gd-vac-section" id="vacancies">
+        <div className="gd-container">
+          <div className="gd-vac-head">
+            <h2 className="gd-vac-title">
+              نوظِّف.
+              <br />
+              <em>أحضري موهبتكِ.</em>
+            </h2>
+          </div>
+
+          {jobs.length === 0 ? (
+            <div className="gd-vac-empty">
+              <h3>لا توجد وظائف شاغرة حالياً</h3>
+              <p>تابعينا قريباً — ننشر الفرص الجديدة هنا أوّلاً.</p>
+            </div>
+          ) : (
+            <div className="gd-vac-list">
+              {jobs.map((job, i) => {
+                const { lead, accent } = splitTitleAccent(job.title);
+                return (
+                  <Link
+                    key={job.id}
+                    className="gd-vac-row"
+                    href={`/jobs/${job.id}`}
+                  >
+                    <span className="gd-vac-num">{pad2(i + 1)}</span>
+                    <span className="gd-vac-role">
+                      {lead ? `${lead} ` : ""}
+                      <em>{accent}</em>
+                    </span>
+                    <span className="gd-vac-meta-text">
+                      {job.expiryDate
+                        ? `حتى ${formatDateAr(job.expiryDate)}`
+                        : "التقديم مفتوح"}
+                    </span>
+                    <span className="gd-vac-arrow">
+                      تقديم
+                      <svg
+                        viewBox="0 0 22 14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                      >
+                        <line x1="0" y1="7" x2="20" y2="7" />
+                        <polyline points="14,1 20,7 14,13" />
+                      </svg>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
         </div>
-      </main>
+      </section>
+
+      {/* ============== FOOTER ============== */}
+      <footer className="gd-footer" id="contact">
+        <div className="gd-container">
+          <div className="gd-footer-grid">
+            <div>
+              <div className="gd-footer-mark">
+                Gardenia
+                <span
+                  style={{
+                    color: "var(--gd-clay)",
+                    fontSize: 18,
+                    verticalAlign: "top",
+                    marginInlineStart: 8,
+                  }}
+                >
+                  ✦
+                </span>
+              </div>
+              <p className="gd-footer-tag">
+                صالونٌ صغير، اهتمامٌ كبير — للشعر والبشرة والأظافر، وكوبٍ من
+                المنعش.
+              </p>
+            </div>
+          </div>
+          <div className="gd-footer-bottom">
+            <span>© {new Date().getFullYear()} Gardenia · جميع الحقوق محفوظة</span>
+            <span>صُنِع بحبّ.</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
