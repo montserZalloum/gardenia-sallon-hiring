@@ -19,17 +19,18 @@ export function Brand({
   const dimension = sizes[size];
   const content = (
     <Image
-      src="/logo.jpg"
-      alt="Hill House"
+      src="/logo-new.png"
+      alt="Gardenia"
       width={dimension}
       height={dimension}
       priority
+      // style={{ filter: "invert(1)" }}
       className={cn("rounded-md object-cover", className)}
     />
   );
   if (!withLink) return content;
   return (
-    <Link href="/" aria-label="Hill House home">
+    <Link href="/" aria-label="Gardenia home">
       {content}
     </Link>
   );

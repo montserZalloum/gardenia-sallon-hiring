@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getDb, ensureIndexes } from "@/lib/mongodb";
 import { startOfTodayInSalonTZ } from "@/lib/dates";
 import { formatDateAr } from "@/lib/format";
@@ -67,7 +68,14 @@ export default async function HomePage() {
       <header className="gd-header" id="gd-header">
         <div className="gd-container gd-header-inner">
           <Link className="gd-wordmark" href="/">
-            Gardenia<span className="star">✦</span>
+            <Image
+              src="/logo-new.png"
+              alt="Gardenia"
+              width={340}
+              height={40}
+              priority
+              // style={{ filter: "invert(1)" }}
+            />
           </Link>
         </div>
       </header>
@@ -101,7 +109,7 @@ export default async function HomePage() {
             </span>
           </h1>
 
-          <div className="gd-hero-flower" aria-hidden="true">
+          {/* <div className="gd-hero-flower" aria-hidden="true">
             <svg
               viewBox="0 0 120 120"
               fill="none"
@@ -120,6 +128,16 @@ export default async function HomePage() {
                 <circle r="4" fill="currentColor" stroke="none" />
               </g>
             </svg>
+          </div> */}
+
+          <div className="gd-hero-image-1" aria-hidden="true">
+            <Image
+              src="/2.png"
+              alt=""
+              width={220}
+              height={220}
+              priority
+            />
           </div>
 
           <div className="gd-hero-scissors" aria-hidden="true">
@@ -222,21 +240,16 @@ export default async function HomePage() {
           <div className="gd-footer-grid">
             <div>
               <div className="gd-footer-mark">
-                Gardenia
-                <span
-                  style={{
-                    color: "var(--gd-clay)",
-                    fontSize: 18,
-                    verticalAlign: "top",
-                    marginInlineStart: 8,
-                  }}
-                >
-                  ✦
-                </span>
+                <Image
+                  src="/logo-new.png"
+                  alt="Gardenia"
+                  width={140}
+                  height={40}
+                  style={{ filter: "invert(1)" }}
+                />
               </div>
               <p className="gd-footer-tag">
-                صالونٌ صغير، اهتمامٌ كبير — للشعر والبشرة والأظافر، وكوبٍ من
-                المنعش.
+                صالونٌ صغير، اهتمامٌ كبير — للشعر والبشرة والأظافر،
               </p>
             </div>
           </div>

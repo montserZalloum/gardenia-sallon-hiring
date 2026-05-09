@@ -237,7 +237,7 @@ export function DynamicField<T extends FieldValues = FieldValues>({
                 <Input
                   id={fieldId}
                   type="file"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
+                  accept="image/*"
                   onChange={(e) => onChange(e.target.files?.[0] ?? null)}
                   onBlur={rhf.onBlur}
                   aria-invalid={Boolean(error)}

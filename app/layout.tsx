@@ -31,13 +31,39 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+const SITE_TITLE = "Gardenia — نبحث عن مواهب تشبه روحَ المكان";
+const SITE_DESCRIPTION =
+  "انضمّي إلى عائلة Gardenia. تصفّحي الوظائف المتاحة في الصالون، واختاري ما يناسبكِ. كل تقديم يصل مباشرةً لصاحبة الصالون.";
+
 export const metadata: Metadata = {
-  title: "Gardenia — التوظيف",
-  description: "موقع التوظيف الإلكتروني لصالون Gardenia",
+  metadataBase: new URL("https://gardenia-sallon.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   icons: {
-    icon: "/logo.jpg",
-    shortcut: "/logo.jpg",
-    apple: "/logo.jpg",
+    icon: "/logo-new.png",
+    shortcut: "/logo-new.png",
+    apple: "/logo-new.png",
+  },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "ar_AR",
+    siteName: "Gardenia",
+    images: [
+      {
+        url: "/logo-new.png",
+        width: 1200,
+        height: 630,
+        alt: "Gardenia",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/logo-new.png"],
   },
 };
 

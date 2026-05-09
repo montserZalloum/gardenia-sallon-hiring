@@ -3,11 +3,10 @@ import type { FieldType } from "./types";
 export const MAX_FILE_BYTES = 3 * 1024 * 1024;
 
 export const ALLOWED_FILE_MIMES = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "image/jpeg",
   "image/png",
+  "image/webp",
+  "image/gif",
 ];
 
 export interface FieldTypeMeta {
