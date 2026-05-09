@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "Gardenia",
     images: [
       {
-        url: "/logo-new.png",
+        url: "/original-logo.jpeg",
         width: 1200,
         height: 630,
         alt: "Gardenia",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/logo-new.png"],
+    images: ["/original-logo.jpeg"],
   },
 };
 
